@@ -48,7 +48,6 @@ const FourItemComponent: FC<{
                   reader.readAsDataURL(tempFiles[0].originalFileObj);
                   // 图片文件完全拿到后执行
                   reader.onload = () => {
-                    debugger
                     // 转换成base64格式
                     const base64Img = reader.result;
                     canvasRef.setBackgroundImage(

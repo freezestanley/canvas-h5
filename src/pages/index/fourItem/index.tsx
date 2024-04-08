@@ -48,6 +48,7 @@ const FourItemComponent: FC<{
                   reader.readAsDataURL(tempFiles[0].originalFileObj);
                   // 图片文件完全拿到后执行
                   reader.onload = () => {
+                    debugger
                     // 转换成base64格式
                     const base64Img = reader.result;
                     canvasRef.setBackgroundImage(
@@ -55,8 +56,10 @@ const FourItemComponent: FC<{
                       canvasRef.renderAll.bind(canvasRef),
                       {
                         // 保证背景图1:1铺满容器
-                        scaleX: size[0] / resp.width, //计算出图片要拉伸的宽度
-                        scaleY: size[1] / resp.height, //计算出图片要拉伸的高度
+                        scaleX: 1 - canvasRef.getWidth() / resp.width, //计算出图片要拉伸的宽度
+                        scaleY: 1 - canvasRef.getHeight() / resp.height, //计算出图片要拉伸的高度
+                        top: 0,
+                        left: 0,
                       }
                     );
                   };

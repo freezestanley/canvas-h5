@@ -102,6 +102,13 @@ export function isFunction(fn) {
 export function getCanvasWH() {
   const infoSys = Taro.getSystemInfoSync();
   const { windowWidth } = infoSys;
-  return [windowWidth * 0.85, windowWidth * 1.4];
+  const size = [1080,1960]
+  const rato = floor(size[1] / size[0])
+  // return [floor(windowWidth * 0.85), floor(windowWidth * 0.85*rato)];
+  return size
 }
 
+
+export function floor(num) {
+  return Math.floor(num * 100) / 100;
+}

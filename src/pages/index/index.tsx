@@ -25,6 +25,7 @@ import ThreeItemComponent from "./threeItem/index";
 import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
 import {download} from '../../widget/download';
+import {useStore} from '../../widget/store';
 
 type ElementType = "IText" | "Image" | "Textbox";
 
@@ -40,6 +41,17 @@ const baseShapeConfig = {
 };
 
 const Index = () => {
+  // const getlist = useStore((state:any) => state);
+  // const addImg = useStore((state:any) => state.addImg);
+  const getVotes = useStore((state:any) => state.votes);
+  // const addVotes = useStore((state:any) => state.addVotes);
+  // const subtractVotes = useStore((state:any) => state.subtractVotes);
+
+  const getImgList = useStore((state:any) => state.imglist);
+  const addImg = useStore((state:any) => state.addImg);
+  const removeImg = useStore((state:any) => state.removeImg);
+
+
   const size = getCanvasWH();
   const rato = size[1]/size[0]
   const canvasRef = useRef<any>(null); // 画布
@@ -359,7 +371,6 @@ const Index = () => {
     zCanvas.height = 1960
     const zctx = zCanvas.getContext("2d");
     const aa = workspace.current.getCoords()
-    debugger
     zctx?.drawImage(canvasRef.current.getElement(),
       // (canvasRef.current.getWidth() - workspace.current.width)/2,
       // (canvasRef.current.getHeight() - workspace.current.height)/2,
@@ -369,7 +380,8 @@ const Index = () => {
       0, 0,
       1080, 1960);
     // download(canvasRef.current.toDataURL("image/png"));
-    download(zCanvas.toDataURL("image/png"));
+    // download(zCanvas.toDataURL("image/png"));
+    const result = addImg(zCanvas.toDataURL("image/png"))
   };
 
   // 读取模板 json
@@ -470,6 +482,9 @@ const Index = () => {
                 historyState(stateIndexRef.current + 1);
               }}
             />
+            <View onClick={() => addImg('fff',guid())}>+</View>
+            <View onClick={() => removeImg('img33182509-a2b4-3036-6b9f-abf6453cc77f')}>-</View>
+
             <AtButton
               className="ml-1 mr-2 see-btn"
               size="small"
@@ -477,6 +492,7 @@ const Index = () => {
             >
               预览
             </AtButton>
+
             <View className="save-btn" onClick={handleSaveTpl}>
               保存
             </View>

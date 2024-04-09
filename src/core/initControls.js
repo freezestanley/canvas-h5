@@ -238,6 +238,7 @@ function initControls(canvas) {
   canvas.selectionColor = 'rgba(46, 115, 252, 0.11)';
   canvas.selectionBorderColor = 'rgba(98, 155, 255, 0.81)';
   canvas.selectionLineWidth = 1.5;
+
   // 指定textbox
   const textBoxControls = fabric.Textbox.prototype.controls = {};
 

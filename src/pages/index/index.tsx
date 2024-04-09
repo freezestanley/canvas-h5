@@ -106,6 +106,12 @@ const Index = () => {
         underline: shape.underline,
         opacity: shape.opacity,
       });
+      shape.width = shape.calcTextWidth();
+      shape.on('changed', function(options) {
+        this.width = this.calcTextWidth();
+        console.log('Text changed:', shape.text);
+    });
+
     } else if (type === "Image") {
       fabric.Image.fromURL(url, function (oImg: any) {
         oImg.scale(1).set({

@@ -11,6 +11,9 @@
 page {
   height: 100%;
 }
+* {
+  box-sizing: border-box;
+}
 
 @mixin text-ellipsis {
   overflow: hidden;

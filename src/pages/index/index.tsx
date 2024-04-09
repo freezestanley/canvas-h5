@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import Taro from "@tarojs/taro";
+import Taro, { useRouter } from "@tarojs/taro";
 import { View, Text, Image } from "@tarojs/components";
 import { AtButton, AtCurtain } from "taro-ui";
 import { fabric } from "fabric";
@@ -24,7 +24,8 @@ import TwoItemComponent from "./twoItem/index";
 import ThreeItemComponent from "./threeItem/index";
 import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
-import {download} from '../../widget/download';
+import { templates } from "./templates";
+import { download } from "../../widget/download";
 
 type ElementType = "IText" | "Image" | "Textbox";
 
@@ -41,7 +42,7 @@ const baseShapeConfig = {
 
 const Index = () => {
   const size = getCanvasWH();
-  const rato = size[1]/size[0]
+  const rato = size[1] / size[0];
   const canvasRef = useRef<any>(null); // 画布
   const workspaceEl = useRef<any>(null);
   const [option, setOptions] = useState<{ width: number; height: number }>({
@@ -125,8 +126,8 @@ const Index = () => {
   // 初始化背景
   const initBackground = (canvas) => {
     canvasRef.current.setBackgroundColor("#fff", canvas.renderAll.bind(canvas));
-    canvasRef.current.setWidth(workspaceEl.current.offsetWidth * .8);
-    canvasRef.current.setHeight(workspaceEl.current.offsetWidth * .8 * rato);
+    canvasRef.current.setWidth(workspaceEl.current.offsetWidth * 0.8);
+    canvasRef.current.setHeight(workspaceEl.current.offsetWidth * 0.8 * rato);
   };
 
   /**
@@ -311,6 +312,17 @@ const Index = () => {
       "object:added": updateCanvasState,
     });
   }, []);
+  const router = useRouter();
+  useEffect(() => {
+    // setTimeout(() => {
+    const { templateKey } = router.params;
+    if (templateKey) {
+      canvasRef.current.loadFromJSON(templates[templateKey].json, (o, obj) => {
+        console.log("init canvas ===>", { canvasRef, o, obj });
+      });
+    }
+    // }, 1000);
+  }, [router.params]);
 
   const getImgUrl = () => {
     const img = document.getElementById("c");
@@ -332,8 +344,8 @@ const Index = () => {
   };
 
   const handleSaveTpl = () => {
-    const val = "模板:" + guid(); // 模板名字
     const id = guid();
+    const val = `模板:${id}`; // 模板名字
     const json = canvasRef.current.toDatalessJSON([
       "id",
       "selectable",
@@ -344,7 +356,9 @@ const Index = () => {
     tplsV[id] = { json, t: val };
     localStorage.setItem("tpls", JSON.stringify(tplsV));
     // 存图片
+    // 当前对象不再处于激活状态
     canvasRef.current.discardActiveObject();
+    // 重新渲染画布
     canvasRef.current.renderAll();
     const imgUrls = getImgUrl();
     const tplImgs = JSON.parse(localStorage.getItem("tplImgs") || "{}");
@@ -353,23 +367,29 @@ const Index = () => {
     setTpls((prev: any) => [...prev, { id, t: val }]);
     Taro.showToast({ title: "模板保存成功！", icon: "success" });
 
-
     const zCanvas = document.createElement("canvas");
-    zCanvas.width = 1080
-    zCanvas.height = 1960
+    zCanvas.width = 1080;
+    zCanvas.height = 1960;
     const zctx = zCanvas.getContext("2d");
-    const aa = workspace.current.getCoords()
-    debugger
-    zctx?.drawImage(canvasRef.current.getElement(),
+    const aa = workspace.current.getCoords();
+    debugger;
+    zctx?.drawImage(
+      canvasRef.current.getElement(),
       // (canvasRef.current.getWidth() - workspace.current.width)/2,
       // (canvasRef.current.getHeight() - workspace.current.height)/2,
       // workspace.current.width,
       // workspace.current.height,
-      0,0,canvasRef.current.getElement().width, canvasRef.current.getElement().height,
-      0, 0,
-      1080, 1960);
+      0,
+      0,
+      canvasRef.current.getElement().width,
+      canvasRef.current.getElement().height,
+      0,
+      0,
+      1080,
+      1960
+    );
     // download(canvasRef.current.toDataURL("image/png"));
-    download(zCanvas.toDataURL("image/png"));
+    // download(zCanvas.toDataURL("image/png"));
   };
 
   // 读取模板 json
@@ -466,7 +486,8 @@ const Index = () => {
                   : arnIcon
               }
               onClick={() => {
-                if (stateIndexRef.current == canvasStateRef.current.length - 1) return;
+                if (stateIndexRef.current == canvasStateRef.current.length - 1)
+                  return;
                 historyState(stateIndexRef.current + 1);
               }}
             />

@@ -3,6 +3,7 @@ $nav-height: 100px;
 $cate-height: 80px;
 $right-bg: #e8e8e8;
 $active-color: #44a48e;
+$left-width: 24vw;
 
 .templates-layout {
   background-color: #efefef;
@@ -41,7 +42,7 @@ $active-color: #44a48e;
   width: 100%;
   &-left {
     border-top: 4px solid $right-bg;
-    width: 24vw;
+    width: $left-width;
     height: -webkit-fill-available;
     background-color: #fff;
     display: flex;
@@ -70,6 +71,7 @@ $active-color: #44a48e;
 
   }
   &-right {
+    width: calc(100vw - $left-width);
     height: 100%;
     background-color: $right-bg;
     flex-grow:  1;

@@ -24,8 +24,8 @@ import TwoItemComponent from "./twoItem/index";
 import ThreeItemComponent from "./threeItem/index";
 import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
-import {download} from '../../widget/download';
-import {useStore} from '../../widget/store';
+import { download } from "../../widget/download";
+import { useStore } from "../../widget/store";
 import { templates } from "./templates";
 
 type ElementType = "IText" | "Image" | "Textbox";
@@ -44,14 +44,13 @@ const baseShapeConfig = {
 const Index = () => {
   // const getlist = useStore((state:any) => state);
   // const addImg = useStore((state:any) => state.addImg);
-  const getVotes = useStore((state:any) => state.votes);
+  const getVotes = useStore((state: any) => state.votes);
   // const addVotes = useStore((state:any) => state.addVotes);
   // const subtractVotes = useStore((state:any) => state.subtractVotes);
 
-  const getImgList = useStore((state:any) => state.imglist);
-  const addImg = useStore((state:any) => state.addImg);
-  const removeImg = useStore((state:any) => state.removeImg);
-
+  const getImgList = useStore((state: any) => state.imglist);
+  const addImg = useStore((state: any) => state.addImg);
+  const removeImg = useStore((state: any) => state.removeImg);
 
   const size = getCanvasWH();
   const rato = size[1] / size[0];
@@ -107,13 +106,11 @@ const Index = () => {
         underline: shape.underline,
         opacity: shape.opacity,
       });
-      debugger
       shape.width = shape.calcTextWidth() + 20;
-      shape.on('changed', function(options) {
-        this.width = this.calcTextWidth()+20;
-        console.log('Text changed:', shape.text);
-    });
-
+      shape.on("changed", function (options) {
+        this.width = this.calcTextWidth() + 20;
+        console.log("Text changed:", shape.text);
+      });
     } else if (type === "Image") {
       fabric.Image.fromURL(url, function (oImg: any) {
         oImg.scale(1).set({
@@ -390,7 +387,8 @@ const Index = () => {
     zCanvas.width = 1080;
     zCanvas.height = 1960;
     const zctx = zCanvas.getContext("2d");
-    zctx?.drawImage(canvasRef.current.getElement(),
+    zctx?.drawImage(
+      canvasRef.current.getElement(),
       // (canvasRef.current.getWidth() - workspace.current.width)/2,
       // (canvasRef.current.getHeight() - workspace.current.height)/2,
       // workspace.current.width,
@@ -406,7 +404,7 @@ const Index = () => {
     );
     // download(canvasRef.current.toDataURL("image/png"));
     download(zCanvas.toDataURL("image/png"));
-    const result = addImg(zCanvas.toDataURL("image/png"))
+    const result = addImg(zCanvas.toDataURL("image/png"));
   };
 
   // 读取模板 json
@@ -425,14 +423,14 @@ const Index = () => {
 
   const firstItemTap = (index: number) => {
     switch (index) {
+      // case 0:
+      //   setFirstBtns({ showPop: true, firstIndex: index });
+      //   break;
       case 0:
-        setFirstBtns({ showPop: true, firstIndex: index });
-        break;
-      case 1:
         insertElement("Textbox");
         setFirstBtns({ showPop: true, firstIndex: index });
         break;
-      case 2:
+      case 1:
         Taro.chooseImage({
           count: 1,
           sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
@@ -460,9 +458,9 @@ const Index = () => {
           },
         });
         break;
-      case 3:
-        setFirstBtns({ showPop: true, firstIndex: index });
-        break;
+      // case 2:
+      //   setFirstBtns({ showPop: true, firstIndex: index });
+      //   break;
       default:
         break;
     }
@@ -551,7 +549,7 @@ const Index = () => {
       {firstBtns?.showPop && firstBtns?.firstIndex != 0 ? (
         <View className="text-btn-item-view">{renderFirst()}</View>
       ) : null}
-      {firstBtns?.showPop && firstBtns?.firstIndex == 0 ? (
+      {/* {firstBtns?.showPop && firstBtns?.firstIndex == 0 ? (
         <TempComponent
           localList={tpls}
           show={firstBtns?.showPop && firstBtns?.firstIndex == 0}
@@ -563,7 +561,7 @@ const Index = () => {
             setFirstBtns({ showPop: false, firstIndex: -1 });
           }}
         />
-      ) : null}
+      ) : null} */}
       <AtCurtain
         isOpened={showImg}
         closeBtnPosition="top"

@@ -32,7 +32,11 @@ const FitterComponent: FC<CommonCanvasChildrenType> = ({
 
   const applyFilterChange = (value, type, key) => {
     const activeObject = canvasRef.getActiveObject();
-    // console.log(activeObject.filters, value, type, key, "9");
+    console.log(
+      { canvasRef, activeObject: activeObject, value, type, key },
+      "9"
+    );
+    // debugger;
     let itemFilter: any = getFilter(activeObject, type);
     if (itemFilter) {
       itemFilter[key] = value;

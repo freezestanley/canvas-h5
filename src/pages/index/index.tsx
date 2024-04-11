@@ -485,6 +485,12 @@ const Index = () => {
         <View className="head-top-view">
           <View className="left-btn-view"></View>
           <View className="head-row-item-r">
+            <View className="close_btn" onClick={
+              () => { Taro.navigateTo({
+                url: `pages/templates/index`,
+              })}
+            }
+            >关闭</View>
             <Image
               className="image-icon"
               src={stateIndexRef.current > 0 ? alIcon : alnIcon}

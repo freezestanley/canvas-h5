@@ -57,6 +57,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: right;
+  position: relative;
+  width: 100%;
 }
 
 .head-title {
@@ -119,4 +121,13 @@
   left: 0;
   right: 0;
   width: 100vw;
+}
+
+.close_btn{
+  font-size: 28px;
+  color:#fff;
+  position: absolute;
+  position: absolute;
+    left: 15px;
+    top: 8px;
 }

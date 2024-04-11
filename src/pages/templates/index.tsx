@@ -8,6 +8,12 @@ import "./index.scss";
 const Templates = () => {
   const [cateSelected, setCateSelected] = useState(0);
   const [styleSelected, setStyleSelected] = useState(0);
+  const templatesRef = useRef();
+
+  const scrollTemplates = () => {
+    //@ts-ignore
+    templatesRef.current?.scrollTo(0)
+  }
   const cateList = useMemo(
     () =>
       templateCate
@@ -100,7 +106,7 @@ const Templates = () => {
           {styleList.length > 0 && (
             <View className="templates-contents-right-nav">{styleList}</View>
           )}
-          <View className="templates-contents-right-templates">
+          <View className="templates-contents-right-templates" ref={templatesRef}>
             {templatesList}
           </View>
         </View>

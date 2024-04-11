@@ -29,8 +29,14 @@ $left-width: 24vw;
     padding: 10px 0;
     padding-left: 20px;
     height: 100%;
-
-    width: 100%;
+    width: 80%;
+    margin-right: 2%;
+  }
+  .search-button{
+    width: 18%;
+    font-size: 28px;
+    background:#44a48e;
+    color:#fff;
   }
 }
 .templates-contents {
@@ -38,7 +44,7 @@ $left-width: 24vw;
   flex-flow: row nowrap;
   justify-content: left;
   align-items: center;
-  flex-grow: 1;
+  height: 94vh;
   width: 100%;
   &-left {
     border-top: 4px solid $right-bg;
@@ -53,11 +59,14 @@ $left-width: 24vw;
     .cate-item {
       padding-left: 20px;
       width: 100%;
-      height: $cate-height;
-      line-height: $cate-height;
+      line-height: 100px;
+      height: 100px;
+      vertical-align: middle;
       position: relative;
+      color:#666;
       &.active {
         background-color: $right-bg;
+        color:#000;
       }
       .active {
         position: absolute;
@@ -77,46 +86,49 @@ $left-width: 24vw;
     flex-grow:  1;
     display: flex;
     flex-flow: column nowrap;
-    padding-top: 16px;
     &-nav {
       width: 100%;
-      height: 60px;
-      line-height: 60px;
+      height: 100px;
+      line-height: 100px;
+      vertical-align: middle;
+      font-size: 20px;
       display: flex;
       flex-flow: row nowrap;
       // padding: 20px 0;
       padding-left: 60px;
       .style-item {
-        font-size: $font-size;
+        font-size: 26px;
         padding: 0 10px;
+
         &.active {
           color: $active-color;
         }
       }
     }
     &-templates {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr); /* 每行两列，每列宽度相同 */
-      grid-auto-rows: 700px; /* 自动设置行高 17.5rem */
-      padding: 0 20px;
-      grid-gap: 20px; /* 可选：设置列之间的间距 */
-      flex-grow: 1;
+      display: flex;
+      flex-flow: row wrap;
+      height: calc(94vh - 100px);
+      overflow: hidden;
+      overflow-y: auto;
       .template-item {
         border-radius: 8px;
         overflow: hidden;
         display: flex;
-        flex-flow: column nowrap;
+        width:46%;
+        margin: 0 2% 30px;
+        flex-flow: column;
         &-img {
           background-repeat: no-repeat;
           background-position: center;
           background-size: cover;
           width: 100%;
-          flex-grow: 1;
+          height: 400px;
         }
         &-title {
           height: 60px;
           line-height: 60px;
-          font-size: 20px;
+          font-size: 30px;
           color: #666;
           text-align: center;
         }

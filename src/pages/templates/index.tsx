@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Taro from "@tarojs/taro";
-import { View, Text, Image, Input } from "@tarojs/components";
+import { View, Text, Image, Input,Button } from "@tarojs/components";
 import { AtButton, AtCurtain } from "taro-ui";
 import { templateCate, templateImages, templates } from "./data";
 import "./index.scss";
@@ -90,6 +90,9 @@ const Templates = () => {
           placeholder="请输入模板名称"
           focus
         />
+        <Button
+        className="search-button"
+        >搜索</Button>
       </View>
       <View className="templates-contents">
         <View className="templates-contents-left">{cateList}</View>

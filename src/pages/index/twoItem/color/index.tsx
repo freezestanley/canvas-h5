@@ -60,8 +60,8 @@ const ColorComponent: FC<ColorChildrenType> = ({
             className="at-col at-col-2 color-dot-view"
             onClick={() => {
               if (typeKey === "bg") {
-                canvasRef.setBackgroundColor(item);
-                canvasRef.renderAll();
+                canvasRef.current.setBackgroundColor(item);
+                canvasRef.current.renderAll();
                 setCanvasBg(item);
               } else {
                 updateAttr("fill", item);

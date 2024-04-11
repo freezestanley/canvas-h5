@@ -1,12 +1,16 @@
 import oneIcon from "../../../../assets/images/ex.png";
 import twoIcon from "../../../../assets/images/text.png";
 import threeIcon from "../../../../assets/images/ic.png";
-import fourIcon from "../../../../assets/images/add.png";
+// import fourIcon from "../../../../assets/images/add.png";
+import icon1 from "../../../../assets/images/bg.png";
+import icon3 from "../../../../assets/images/qc.png";
 
 export const bottomList = [
   { icon: twoIcon, name: "文字" },
   { icon: threeIcon, name: "图片" },
-  // { icon: fourIcon, name: "更多" },
+  { icon: icon1, name: "背景色" },
+  { icon: threeIcon, name: "背景图" },
+  { icon: icon3, name: "清除背景" },
 ];
 
 export const colors = [

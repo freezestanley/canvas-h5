@@ -100,6 +100,7 @@ function renderIconDel(ctx, left, top, styleOverride, fabricObject) {
 
 // 删除事件
 function deleteObject(eventData, transform) {
+  debugger
   let target = transform.target;
   let canvas = target.canvas;
   canvas.remove(target);

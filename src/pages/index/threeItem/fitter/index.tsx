@@ -36,7 +36,6 @@ const FitterComponent: FC<CommonCanvasChildrenType> = ({
       { canvasRef, activeObject: activeObject, value, type, key },
       "9"
     );
-    // debugger;
     let itemFilter: any = getFilter(activeObject, type);
     if (itemFilter) {
       itemFilter[key] = value;

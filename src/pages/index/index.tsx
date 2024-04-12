@@ -121,9 +121,9 @@ const Index = () => {
       fabric.Image.fromURL(url, function (oImg: any) {
         oImg.scale(1).set({
           ...baseShapeConfig[type],
+          angle: 0,
           left: (size[0] - oImg.width * (size[0] / (2 * oImg.width))) / 2,
           top: (size[1] - oImg.height * (size[0] / (2 * oImg.width))) / 2,
-          angle: 0,
           scaleX: size[0] / (2 * oImg.width), //按照默认的尺寸宽度为200的尺寸处理图片添加，所以此处计算原图宽和200的比例，进行缩放
           scaleY: size[0] / (2 * oImg.width), //纵向缩放比以横向比例为主
         });
@@ -284,6 +284,8 @@ const Index = () => {
 
   const mouseUp = (opt: any) => {
     // console.log(opt);
+    const activeObj = canvasRef.current.getActiveObject();
+    !activeObj && setFirstBtns({ firstIndex: -1, showPop: false });
   };
 
   const updateCanvasState = () => {
@@ -432,7 +434,6 @@ const Index = () => {
   };
 
   const firstItemTap = (index: number) => {
-    debugger
     switch (index) {
       // case 0:
       //   setFirstBtns({ showPop: true, firstIndex: index });
@@ -494,9 +495,6 @@ const Index = () => {
                     reader.readAsDataURL(tempFiles[0].originalFileObj);
                     // 图片文件完全拿到后执行
                     reader.onload = () => {
-                      debugger
-                      console.log(canvasRef.current.getWidth())
-                      console.log(canvasRef.current.getHeight())
                       // 转换成base64格式
                       const base64Img = reader.result;
                       canvasRef.current.setBackgroundImage(
@@ -527,7 +525,6 @@ const Index = () => {
   };
 
   const renderFirst = () => {
-    debugger
     switch (firstBtns?.firstIndex) {
       case 1:
         return <TwoItemComponent canvasRef={canvasRef.current} />;

@@ -84,7 +84,8 @@ const ThreeItemComponent: FC<{
               reader.onload = () => {
                 // 转换成base64格式
                 const base64Img = reader.result;
-                activeObj.setSrc(base64Img, () => {
+
+                activeObj && activeObj.setSrc(base64Img, () => {
                   canvasRef.renderAll();
                 });
               };

@@ -48,7 +48,7 @@ const Index = () => {
   const getVotes = useStore((state: any) => state.votes);
   // const addVotes = useStore((state:any) => state.addVotes);
   // const subtractVotes = useStore((state:any) => state.subtractVotes);
-
+  const router = useRouter();
   const getImgList = useStore((state: any) => state.imglist);
   const addImg = useStore((state: any) => state.addImg);
   const removeImg = useStore((state: any) => state.removeImg);
@@ -89,9 +89,6 @@ const Index = () => {
 
   const [showColor, setShowColor] = useState<boolean>(false);
 
-
-
-
   // 插入元素
   const insertElement = (type: ElementType, url?: any) => {
     let shape: any = null;
@@ -118,6 +115,20 @@ const Index = () => {
         console.log("Text changed:", shape.text);
       });
     } else if (type === "Image") {
+
+
+      // fabric.Image.fromURL(url, function (oImg: any) {
+      //   oImg.scale(1).set({
+      //     ...baseShapeConfig[type],
+      //     angle: 0,
+      //     left: (size[0] - oImg.width * (size[0] / (2 * oImg.width))) / 2,
+      //     top: (size[1] - oImg.height * (size[0] / (2 * oImg.width))) / 2,
+      //     scaleX: size[0] / (2 * oImg.width), //按照默认的尺寸宽度为200的尺寸处理图片添加，所以此处计算原图宽和200的比例，进行缩放
+      //     scaleY: size[0] / (2 * oImg.width), //纵向缩放比以横向比例为主
+      //   });
+      //   canvasRef.current.add(oImg).setActiveObject(oImg);
+      // });
+
       fabric.Image.fromURL(url, function (oImg: any) {
         oImg.scale(1).set({
           ...baseShapeConfig[type],
@@ -129,6 +140,7 @@ const Index = () => {
         });
         canvasRef.current.add(oImg).setActiveObject(oImg);
       });
+
       setFirstBtns({ showPop: true, firstIndex: 2 });
       return;
     }
@@ -255,6 +267,7 @@ const Index = () => {
   };
 
   const mouseDown = (opt: any) => {
+    debugger
     const activeObj = canvasRef.current.getActiveObject();
     if (activeObj) {
       // 如果是文字
@@ -310,6 +323,14 @@ const Index = () => {
   };
 
   useEffect(() => {
+    initCanvas();
+    const { templateKey } = router.params;
+    renderTemplateByTemplateKey(templateKey!);
+    return () => {
+      canvasRef.current = null;
+    };
+  }, []);
+  const initCanvas = () => {
     workspaceEl.current = document.querySelector("#workspace") as HTMLElement;
     // console.log(workspaceEl.current.offsetWidth, "画布底层width");
     if (!workspaceEl.current) {
@@ -335,19 +356,14 @@ const Index = () => {
       "object:modified": updateCanvasState,
       "object:added": updateCanvasState,
     });
-  }, []);
-  const router = useRouter();
-  useEffect(() => {
-    // setTimeout(() => {
-    const { templateKey } = router.params;
+  };
+  const renderTemplateByTemplateKey = (templateKey: string) => {
     if (templateKey) {
-      canvasRef.current.loadFromJSON(templates[templateKey].json, (o, obj) => {
-        console.log("init canvas ===>", { canvasRef, o, obj });
+      canvasRef.current.loadFromJSON(templates[templateKey].json, () => {
+        console.log("init canvas ===>", { canvasRef });
       });
     }
-    // }, 1000);
-  }, [router.params]);
-
+  };
   const getImgUrl = () => {
     const img = document.getElementById("c");
     const src = (img as HTMLCanvasElement).toDataURL("image/png");
@@ -395,28 +411,29 @@ const Index = () => {
     zCanvas.width = 1080;
     zCanvas.height = 1960;
     const zctx = zCanvas.getContext("2d");
-    if (canvasRef.current.getElement().width &&
-      canvasRef.current.getElement().height) {
-        zctx?.drawImage(
-          canvasRef.current.getElement(),
-          // (canvasRef.current.getWidth() - workspace.current.width)/2,
-          // (canvasRef.current.getHeight() - workspace.current.height)/2,
-          // workspace.current.width,
-          // workspace.current.height,
-          0,
-          0,
-          canvasRef.current.getElement().width,
-          canvasRef.current.getElement().height,
-          0,
-          0,
-          1080,
-          1960
-        );
-        // download(canvasRef.current.toDataURL("image/png"));
-        download(zCanvas.toDataURL("image/png"));
-        const result = addImg(zCanvas.toDataURL("image/png"));
+    if (
+      canvasRef.current.getElement().width &&
+      canvasRef.current.getElement().height
+    ) {
+      zctx?.drawImage(
+        canvasRef.current.getElement(),
+        // (canvasRef.current.getWidth() - workspace.current.width)/2,
+        // (canvasRef.current.getHeight() - workspace.current.height)/2,
+        // workspace.current.width,
+        // workspace.current.height,
+        0,
+        0,
+        canvasRef.current.getElement().width,
+        canvasRef.current.getElement().height,
+        0,
+        0,
+        1080,
+        1960
+      );
+      // download(canvasRef.current.toDataURL("image/png"));
+      download(zCanvas.toDataURL("image/png"));
+      const result = addImg(zCanvas.toDataURL("image/png"));
     }
-
   };
 
   // 读取模板 json
@@ -471,54 +488,106 @@ const Index = () => {
         });
         break;
       case 2:
-          setShowColor(true);
-          break;
+        setShowColor(true);
+        break;
       case 3:
-          Taro.chooseImage({
-            count: 1, // 默认9
-            sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有，在H5浏览器端支持使用 `user` 和 `environment`分别指定为前后摄像头
-            success: function (res) {
-              Taro.getImageInfo({
-                // 获取图片宽高
-                src: res.tempFilePaths[0],
-                success: function (resp) {
-                  const tempFiles = res.tempFiles;
-                  // onAddChildrenTap({
-                  //   index: 1,
-                  //   imgStr: tempFiles[0].originalFileObj,
-                  //   imgW: resp.width,
-                  //   imgH: resp.height,
-                  // });
-                  if (tempFiles[0].originalFileObj) {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(tempFiles[0].originalFileObj);
-                    // 图片文件完全拿到后执行
-                    reader.onload = () => {
-                      // 转换成base64格式
-                      const base64Img = reader.result;
+        Taro.chooseImage({
+          count: 1, // 默认9
+          sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有，在H5浏览器端支持使用 `user` 和 `environment`分别指定为前后摄像头
+          success: function (res) {
+            Taro.getImageInfo({
+              // 获取图片宽高
+              src: res.tempFilePaths[0],
+              success: function (resp) {
+
+
+                const tempFiles = res.tempFiles;
+                // onAddChildrenTap({
+                //   index: 1,
+                //   imgStr: tempFiles[0].originalFileObj,
+                //   imgW: resp.width,
+                //   imgH: resp.height,
+                // });
+                if (tempFiles[0].originalFileObj) {
+                  const reader = new FileReader();
+                  reader.readAsDataURL(tempFiles[0].originalFileObj);
+                  // 图片文件完全拿到后执行
+                  reader.onload = () => {
+                    debugger;
+                    console.log(canvasRef.current.getWidth());
+                    console.log(canvasRef.current.getHeight());
+
+                    const w = canvasRef.current.getWidth();
+                    const h = canvasRef.current.getHeight();
+                    // 转换成base64格式
+                    const base64Img = reader.result;
+
+
+                    // canvasRef.current.setBackgroundImage(
+                    //   base64Img,
+                    //   canvasRef.current.renderAll.bind(canvasRef.current),
+                    //   {
+                    //     // 保证背景图1:1铺满容器
+                    //     scaleX: 1 - canvasRef.current.getWidth() / resp.width, //计算出图片要拉伸的宽度
+                    //     scaleY: 1 - canvasRef.current.getHeight() / resp.height, //计算出图片要拉伸的高度
+                    //     top: 0,
+                    //     left: 0,
+                    //   }
+                    // );
+                    const rate = Math.max(canvasRef.current.getElement().offsetWidth / resp.width*100) / 100
+                    const [originX, originY] = [
+                      size[0] / 2 - canvasRef.current.getElement().offsetWidth / 2,
+                      size[1] / 2 - canvasRef.current.getElement().offsetHeight / 2
+                                                ]
+                    if (resp.width > w) {
+                      // 将文本对象添加到canvas上
+                        canvasRef.current.setBackgroundImage(
+                        base64Img,
+                        canvasRef.current.renderAll.bind(canvasRef.current),
+                        {
+                          // 保证背景图1:1铺满容器
+                          // scaleX: 1 - canvasRef.current.getWidth() / resp.width, //计算出图片要拉伸的宽度
+                          // scaleY: 1 - canvasRef.current.getWidth() / resp.width, //计算出图片要拉伸的高度
+                          // top: 0,
+                          // left: 0,
+                          scaleX: rate, //计算出图片要拉伸的宽度
+                          scaleY: rate, //计算出图片要拉伸的高度
+                          left: originX,
+                          top: originY,
+                        }
+                      );
+                    } else {
                       canvasRef.current.setBackgroundImage(
                         base64Img,
                         canvasRef.current.renderAll.bind(canvasRef.current),
                         {
                           // 保证背景图1:1铺满容器
-                          scaleX: 1 - canvasRef.current.getWidth() / resp.width, //计算出图片要拉伸的宽度
-                          scaleY: 1 - canvasRef.current.getHeight() / resp.height, //计算出图片要拉伸的高度
+                          scaleX: 1,//计算出图片要拉伸的宽度
+                          scaleY: 1, //计算出图片要拉伸的高度
                           top: 0,
                           left: 0,
                         }
                       );
-                    };
-                  }
-                },
-              });
-            },
-          });
-          break;
+                    }
+
+
+
+
+                  };
+                }
+              },
+            });
+          },
+        });
+        break;
       case 4:
-          // 设置为null , 设置为""无效
-          canvasRef.current.setBackgroundImage(null, canvasRef.current.renderAll.bind(canvasRef.current));
-          break;
+        // 设置为null , 设置为""无效
+        canvasRef.current.setBackgroundImage(
+          null,
+          canvasRef.current.renderAll.bind(canvasRef.current)
+        );
+        break;
       default:
         break;
     }
@@ -543,12 +612,22 @@ const Index = () => {
         <View className="head-top-view">
           <View className="left-btn-view"></View>
           <View className="head-row-item-r">
-            <View className="close_btn" onClick={
-              () => { Taro.navigateTo({
-                url: `pages/templates/index`,
-              })}
-            }
-            >关闭</View>
+            <View
+              className="close_btn"
+              onClick={() => {
+                // 用navigateTo会导致模板渲染出问题
+                // Taro.navigateTo({
+                //   url: `pages/templates/index`,
+                // });
+                // 用下面两个都行
+                // Taro.navigateBack();
+                Taro.redirectTo({
+                  url: `pages/templates/index`,
+                });
+              }}
+            >
+              关闭
+            </View>
             <Image
               className="image-icon"
               src={stateIndexRef.current > 0 ? alIcon : alnIcon}
@@ -599,17 +678,14 @@ const Index = () => {
           }}
         >
           {bottomList.map((item: any, index: number) => (
-
-              <View
-                key={index}
-                className="bottom-item-col"
-                onClick={() => firstItemTap(index)}
-              >
-                <Image src={item.icon} className="bottom-item-img" />
-                <Text className="bottom-item-title">{item.name}</Text>
-              </View>
-
-
+            <View
+              key={index}
+              className="bottom-item-col"
+              onClick={() => firstItemTap(index)}
+            >
+              <Image src={item.icon} className="bottom-item-img" />
+              <Text className="bottom-item-title">{item.name}</Text>
+            </View>
           ))}
           <ColorComponent
             typeKey="bg"
@@ -618,7 +694,6 @@ const Index = () => {
             canvasRef={canvasRef}
           />
         </View>
-
       </View>
       {firstBtns?.showPop && firstBtns?.firstIndex != 0 ? (
         <View className="text-btn-item-view">{renderFirst()}</View>

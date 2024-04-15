@@ -3,6 +3,10 @@ import templeB from './temp/b02b3740-29a8-2d03-dd94-4f00b523e9f8.json';
 import templeC from './temp/f1e9724f-d5c1-8cff-9ad7-29dcdbd6f5df.json';
 import templeD from './temp/396acba5-23ef-7840-94dc-a42c63560196.json';
 import templeE from './temp/ccb92fb5-44c9-88c5-8966-f7bbb7636a2c.json';
+import templeF from './temp/85b2f788-933c-9a47-96e1-76e5a810832b.json';
+import templeG from './temp/384ad2cd-7445-ef28-b481-a4f5268a7dac.json';
+import templeI from './temp/9458d035-3ba3-aabb-e0e2-7b81d5d82e64.json';
+import templeJ from './temp/4293c0de-232c-10ba-3633-ab02376fad41.json';
 
 
 export const templateCate = [
@@ -75,5 +79,37 @@ export const templates = [
     tplImgs:Object.values(JSON.parse(templeE.tplImgs))[0],
     cate: 0,
     style: "简约",
+  },
+  {
+    t: '85b2f788-933c-9a47-96e1-76e5a810832b',
+    name: '大字版1',
+    tpls:Object.values(JSON.parse(templeF.tpls))[0],
+    tplImgs:Object.values(JSON.parse(templeF.tplImgs))[0],
+    cate: 0,
+    style: "大字版",
+  },
+  {
+    t: '384ad2cd-7445-ef28-b481-a4f5268a7dac',
+    name: '大字版1',
+    tpls:Object.values(JSON.parse(templeG.tpls))[0],
+    tplImgs:Object.values(JSON.parse(templeG.tplImgs))[0],
+    cate: 0,
+    style: "大字版",
+  },
+  {
+    t: '9458d035-3ba3-aabb-e0e2-7b81d5d82e64',
+    name: '大字版1',
+    tpls:Object.values(JSON.parse(templeI.tpls))[0],
+    tplImgs:Object.values(JSON.parse(templeI.tplImgs))[0],
+    cate: 0,
+    style: "大字版",
+  },
+  {
+    t: '9458d035-3ba3-aabb-e0e2-7b81d5d82e64',
+    name: '传统1',
+    tpls:Object.values(JSON.parse(templeJ.tpls))[0],
+    tplImgs:Object.values(JSON.parse(templeJ.tplImgs))[0],
+    cate: 0,
+    style: "传统",
   }
 ]

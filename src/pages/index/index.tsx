@@ -27,7 +27,7 @@ import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
 import { download, downloadBlob } from "../../widget/download";
 import { useStore } from "../../widget/store";
-import { templates } from "../../pages/templates/data";
+import { templates, templateCate } from "../../pages/templates/data";
 import ColorComponent from "./twoItem/color";
 
 type ElementType = "IText" | "Image" | "Textbox";
@@ -45,7 +45,7 @@ const baseShapeConfig = {
   },
   Image: {},
 };
-
+const IS_DEV = process.env.NODE_ENV === "development";
 const Index = () => {
   // const getlist = useStore((state:any) => state);
   // const addImg = useStore((state:any) => state.addImg);
@@ -119,7 +119,6 @@ const Index = () => {
         console.log("Text changed:", shape.text);
       });
     } else if (type === "Image") {
-
       fabric.Image.fromURL(url, function (oImg: any) {
         oImg.scale(1).set({
           ...baseShapeConfig[type],
@@ -407,20 +406,14 @@ const Index = () => {
     canvasRef.current.clear();
   };
   const [showTemplateInfo, setShowTemplateInfo] = useState(false);
-  const showTemplateInfoModal = () => {
-    // setShowTemplateInfo(true);
-  };
   const onTemplateInfoModalSubmit = (params: TemplateInfoType) => {
     const style = Array.isArray(templateCate[params.cate].styles)
       ? templateCate[params.cate].styles[params.style]
       : "";
     handleSaveTpl({ ...params, style });
+    setShowTemplateInfo(false);
   };
-
-  /**
-   * 保存模板
-   */
-  const handleSaveTpl = (params: TemplateInfoSaveType) => {
+  const handleTemplateJson = (params?: TemplateInfoSaveType) => {
     const id = guid();
     const val = `模板:${id}`; // 模板名字
     const json = canvasRef.current.toDatalessJSON([
@@ -428,32 +421,38 @@ const Index = () => {
       "selectable",
       "hasControls",
     ]);
-    // 存json
-    const tplsV = JSON.parse(localStorage.getItem("tpls") || "{}");
-    tplsV[id] = {
-      json,
-      t: params.title,
-      cate: params.cate,
-      style: params.style,
-    };
-    localStorage.setItem("tpls", JSON.stringify(tplsV));
-    // 存图片
+
+    setTpls((prev: any) => [...prev, { id, t: val }]);
+    Taro.showToast({ title: "模板保存成功！", icon: "success" });
+    if (IS_DEV) {
+      // 存json
+      const tplsV = {};
+      tplsV[id] = {
+        json,
+        t: IS_DEV ? params?.title : id,
+        cate: IS_DEV ? params?.cate : "",
+        style: IS_DEV ? params?.style : "",
+      };
+      const imgUrls = getImgUrl();
+      const tplImgs = {};
+      tplImgs[id] = imgUrls;
+      const str = JSON.stringify({
+        tplImgs: JSON.stringify(tplImgs),
+        tpls: JSON.stringify(tplsV),
+      });
+      downloadBlob(new Blob([str]), `${id}.json`);
+    }
+  };
+  /**
+   * 保存模板
+   */
+  const handleSaveTpl = (params?: TemplateInfoSaveType) => {
+    handleTemplateJson(params);
+
     // 当前对象不再处于激活状态
     canvasRef.current.discardActiveObject();
     // 重新渲染画布
     canvasRef.current.renderAll();
-    const imgUrls = getImgUrl();
-    const tplImgs = JSON.parse(localStorage.getItem("tplImgs") || "{}");
-    tplImgs[id] = imgUrls;
-    localStorage.setItem("tplImgs", JSON.stringify(tplImgs));
-    setTpls((prev: any) => [...prev, { id, t: val }]);
-    Taro.showToast({ title: "模板保存成功！", icon: "success" });
-    const str = JSON.stringify({
-      tplImgs: JSON.stringify(tplImgs),
-      tpls: JSON.stringify(tplsV),
-    });
-    downloadBlob(new Blob([str]), `${id}.json`);
-
     const zCanvas = document.createElement("canvas");
     zCanvas.width = 1080;
     zCanvas.height = 1960;
@@ -705,8 +704,17 @@ const Index = () => {
               预览
             </AtButton>
 
-            <View className="save-btn" onClick={handleSaveTpl}>
-            {/* //onClick={showTemplateInfoModal}> */}
+            <View
+              className="save-btn"
+              onClick={() => {
+                if (IS_DEV) {
+                  setShowTemplateInfo(true);
+                  return;
+                }
+                handleSaveTpl();
+              }}
+            >
+              {/* //onClick={showTemplateInfoModal}> */}
               保存
             </View>
           </View>

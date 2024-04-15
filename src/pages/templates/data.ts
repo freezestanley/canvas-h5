@@ -2,6 +2,8 @@ import templeA from './temp/c10eb20a-b586-dd89-8dc7-d17317a0f299.json';
 import templeB from './temp/b02b3740-29a8-2d03-dd94-4f00b523e9f8.json';
 import templeC from './temp/f1e9724f-d5c1-8cff-9ad7-29dcdbd6f5df.json';
 import templeD from './temp/396acba5-23ef-7840-94dc-a42c63560196.json';
+import templeE from './temp/ccb92fb5-44c9-88c5-8966-f7bbb7636a2c.json';
+
 
 export const templateCate = [
   {
@@ -63,6 +65,14 @@ export const templates = [
     name: '简约1',
     tpls:Object.values(JSON.parse(templeD.tpls))[0],
     tplImgs:Object.values(JSON.parse(templeD.tplImgs))[0],
+    cate: 0,
+    style: "简约",
+  },
+  {
+    t: 'ccb92fb5-44c9-88c5-8966-f7bbb7636a2c',
+    name: '简约2',
+    tpls:Object.values(JSON.parse(templeE.tpls))[0],
+    tplImgs:Object.values(JSON.parse(templeE.tplImgs))[0],
     cate: 0,
     style: "简约",
   }

@@ -408,7 +408,7 @@ const Index = () => {
   };
   const [showTemplateInfo, setShowTemplateInfo] = useState(false);
   const showTemplateInfoModal = () => {
-    setShowTemplateInfo(true);
+    // setShowTemplateInfo(true);
   };
   const onTemplateInfoModalSubmit = (params: TemplateInfoType) => {
     const style = Array.isArray(templateCate[params.cate].styles)
@@ -705,7 +705,8 @@ const Index = () => {
               预览
             </AtButton>
 
-            <View className="save-btn" onClick={showTemplateInfoModal}>
+            <View className="save-btn" onClick={handleSaveTpl}>
+            {/* //onClick={showTemplateInfoModal}> */}
               保存
             </View>
           </View>

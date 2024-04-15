@@ -108,7 +108,9 @@ $left-width: 24vw;
     &-templates {
       display: flex;
       flex-flow: row wrap;
-      height: calc(94vh - 100px);
+      justify-content: flex-start;
+      align-items: flex-start;
+      // height: calc(94vh - 100px);
       overflow: hidden;
       overflow-y: auto;
       .template-item {
@@ -116,8 +118,10 @@ $left-width: 24vw;
         overflow: hidden;
         display: flex;
         width:46%;
+        height: 500px;
         margin: 10px 2% 30px;
         flex-flow: column;
+        position: relative;
         &-img {
           background-repeat: no-repeat;
           background-position: center;
@@ -128,10 +132,15 @@ $left-width: 24vw;
           border-radius: 5px;
         }
         &-title {
+          width: 100%;
           height: 60px;
           line-height: 60px;
           font-size: 30px;
           color: #666;
+          text-align: center;
+          position: absolute;
+          bottom: 0;
+          left: 0;
           text-align: center;
         }
       }

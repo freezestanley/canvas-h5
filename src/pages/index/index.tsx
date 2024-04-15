@@ -26,11 +26,7 @@ import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
 import { download, downloadBlob } from "../../widget/download";
 import { useStore } from "../../widget/store";
-<<<<<<< HEAD
 import { templates } from "../../pages/templates/data";
-=======
-import { templates } from "../templates/data";
->>>>>>> bcdb090f269e7faf8d7c056d877daa1bedeb5f32
 import ColorComponent from "./twoItem/color";
 
 type ElementType = "IText" | "Image" | "Textbox";
@@ -120,22 +116,6 @@ const Index = () => {
         console.log("Text changed:", shape.text);
       });
     } else if (type === "Image") {
-<<<<<<< HEAD
-
-=======
-      // fabric.Image.fromURL(url, function (oImg: any) {
-      //   oImg.scale(1).set({
-      //     ...baseShapeConfig[type],
-      //     angle: 0,
-      //     left: (size[0] - oImg.width * (size[0] / (2 * oImg.width))) / 2,
-      //     top: (size[1] - oImg.height * (size[0] / (2 * oImg.width))) / 2,
-      //     scaleX: size[0] / (2 * oImg.width), //按照默认的尺寸宽度为200的尺寸处理图片添加，所以此处计算原图宽和200的比例，进行缩放
-      //     scaleY: size[0] / (2 * oImg.width), //纵向缩放比以横向比例为主
-      //   });
-      //   canvasRef.current.add(oImg).setActiveObject(oImg);
-      // });
->>>>>>> bcdb090f269e7faf8d7c056d877daa1bedeb5f32
-
       fabric.Image.fromURL(url, function (oImg: any) {
         oImg.scale(1).set({
           ...baseShapeConfig[type],
@@ -396,19 +376,16 @@ const Index = () => {
     });
   };
   const renderTemplateByTemplateKey = (templateKey: string) => {
-<<<<<<< HEAD
     debugger
-    console.log(templates)
-    if (templateKey) {
-=======
     console.log({
       templateKey,
       templates,
     });
+    debugger
+    const result = templates.find((item) => item.t === templateKey);
 
-    if (templateKey !== undefined && templateKey in templates) {
->>>>>>> bcdb090f269e7faf8d7c056d877daa1bedeb5f32
-      canvasRef.current.loadFromJSON(templates[templateKey].json, () => {
+    if (templateKey !== undefined && result) {
+      canvasRef.current.loadFromJSON(result.tpls?.json, () => {
         console.log("init canvas ===>", { canvasRef });
       });
     }

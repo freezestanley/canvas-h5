@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Taro from "@tarojs/taro";
 import { View, Text, Image, Input,Button } from "@tarojs/components";
 import { AtButton, AtCurtain } from "taro-ui";
-import { templateCate, templateImages, templates } from "./data";
+import { templateCate, templates } from "./data"; //templateImages,
 import "./index.scss";
 
 const Templates = () => {
@@ -51,22 +51,14 @@ const Templates = () => {
     [cateSelected, styleSelected]
   );
   const templatesList = useMemo(() => {
-    debugger
-    const filterTemplate = Object.keys(templates)
-      .map((key) => ({
-        ...templates[key],
-        key,
-      }))
-      .filter((item) => {
+    const filterTemplate = templates.filter((item) => {
         const currentCate = templateCate[cateSelected];
         const currentStyle =
           !item.style || currentCate.styles[styleSelected] === item.style;
         return item.cate === cateSelected && currentStyle;
       });
-    debugger
     return filterTemplate.map((item, idx) => {
       // const currentTemplate = templates[key]
-      debugger
       return (
         <View
           className="template-item"
@@ -75,17 +67,18 @@ const Templates = () => {
             // 跳转到index
             console.log(item);
             Taro.navigateTo({
-              url: `pages/index/index?templateKey=${item.key}`,
+              url: `pages/index/index?templateKey=${item.t}`,
             });
           }}
         >
-          <View
+          <Image className="template-item-img" src={item.tplImgs as string} />
+          {/* <View
             className="template-item-img"
             style={{
               backgroundImage: `url(${templateImages[item.key]})`,
             }}
-          />
-          <View className="template-item-title">{item.t}</View>
+          /> */}
+          <View className="template-item-title">{item.name}</View>
         </View>
       );
     });

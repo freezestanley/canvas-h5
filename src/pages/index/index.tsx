@@ -707,10 +707,10 @@ const Index = () => {
             <View
               className="save-btn"
               onClick={() => {
-                if (IS_DEV) {
-                  setShowTemplateInfo(true);
-                  return;
-                }
+                // if (IS_DEV) {
+                //   setShowTemplateInfo(true);
+                //   return;
+                // }
                 handleSaveTpl();
               }}
             >

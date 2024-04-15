@@ -12,6 +12,7 @@ import alnIcon from "../../assets/images/al_normal.png";
 import arnIcon from "../../assets/images/ar_normal.png";
 import initControls from "../../core/initControls";
 import initAligningGuidelines from "../../core/initAligningGuidelines";
+import TemplateInfoModal, { TemplateInfoType } from "./templateInfoModal";
 import {
   useFirstBtns,
   useCurrentFont,
@@ -26,11 +27,13 @@ import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
 import { download } from "../../widget/download";
 import { useStore } from "../../widget/store";
-import { templates } from "../templates/data";
+import { templates, templateCate } from "../templates/data";
 import ColorComponent from "./twoItem/color";
 
 type ElementType = "IText" | "Image" | "Textbox";
-
+interface TemplateInfoSaveType extends Omit<TemplateInfoType, "style"> {
+  style: string;
+}
 const baseShapeConfig = {
   Textbox: {
     text: "双击输入文字",
@@ -385,8 +388,21 @@ const Index = () => {
   const clear = () => {
     canvasRef.current.clear();
   };
+  const [showTemplateInfo, setShowTemplateInfo] = useState(false);
+  const showTemplateInfoModal = () => {
+    setShowTemplateInfo(true);
+  };
+  const onTemplateInfoModalSubmit = (params: TemplateInfoType) => {
+    const style = Array.isArray(templateCate[params.cate].styles)
+      ? templateCate[params.cate].styles[params.style]
+      : "";
+    handleSaveTpl({ ...params, style });
+  };
 
-  const handleSaveTpl = () => {
+  /**
+   * 保存模板
+   */
+  const handleSaveTpl = (params: TemplateInfoSaveType) => {
     const id = guid();
     const val = `模板:${id}`; // 模板名字
     const json = canvasRef.current.toDatalessJSON([
@@ -396,7 +412,12 @@ const Index = () => {
     ]);
     // 存json
     const tplsV = JSON.parse(localStorage.getItem("tpls") || "{}");
-    tplsV[id] = { json, t: val };
+    tplsV[id] = {
+      json,
+      t: params.title,
+      cate: params.cate,
+      style: params.style,
+    };
     localStorage.setItem("tpls", JSON.stringify(tplsV));
     // 存图片
     // 当前对象不再处于激活状态
@@ -661,7 +682,7 @@ const Index = () => {
               预览
             </AtButton>
 
-            <View className="save-btn" onClick={handleSaveTpl}>
+            <View className="save-btn" onClick={showTemplateInfoModal}>
               保存
             </View>
           </View>
@@ -721,6 +742,13 @@ const Index = () => {
       >
         <Image style={{ width: "100%", height: "82vh" }} src={imgUrl} />
       </AtCurtain>
+      <TemplateInfoModal
+        show={showTemplateInfo}
+        onClose={() => {
+          setShowTemplateInfo(false);
+        }}
+        onSubmit={onTemplateInfoModalSubmit}
+      />
     </>
   );
 };

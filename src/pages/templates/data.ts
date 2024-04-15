@@ -20,7 +20,9 @@ export const templateCate = [
     styles: ["正面", "背面"],
   },
 ];
-
+export const templateCates = Object.freeze(
+  templateCate.map((item) => item.cate)
+);
 /**
  * 模板初始化信息，上线要替换，或者远程获取
  */

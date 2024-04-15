@@ -26,7 +26,11 @@ import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
 import { download, downloadBlob } from "../../widget/download";
 import { useStore } from "../../widget/store";
+<<<<<<< HEAD
 import { templates } from "../../pages/templates/data";
+=======
+import { templates } from "../templates/data";
+>>>>>>> bcdb090f269e7faf8d7c056d877daa1bedeb5f32
 import ColorComponent from "./twoItem/color";
 
 type ElementType = "IText" | "Image" | "Textbox";
@@ -116,7 +120,21 @@ const Index = () => {
         console.log("Text changed:", shape.text);
       });
     } else if (type === "Image") {
+<<<<<<< HEAD
 
+=======
+      // fabric.Image.fromURL(url, function (oImg: any) {
+      //   oImg.scale(1).set({
+      //     ...baseShapeConfig[type],
+      //     angle: 0,
+      //     left: (size[0] - oImg.width * (size[0] / (2 * oImg.width))) / 2,
+      //     top: (size[1] - oImg.height * (size[0] / (2 * oImg.width))) / 2,
+      //     scaleX: size[0] / (2 * oImg.width), //按照默认的尺寸宽度为200的尺寸处理图片添加，所以此处计算原图宽和200的比例，进行缩放
+      //     scaleY: size[0] / (2 * oImg.width), //纵向缩放比以横向比例为主
+      //   });
+      //   canvasRef.current.add(oImg).setActiveObject(oImg);
+      // });
+>>>>>>> bcdb090f269e7faf8d7c056d877daa1bedeb5f32
 
       fabric.Image.fromURL(url, function (oImg: any) {
         oImg.scale(1).set({
@@ -287,7 +305,7 @@ const Index = () => {
   };
 
   const mouseDown = (opt: any) => {
-    debugger
+    // debugger
     const activeObj = canvasRef.current.getActiveObject();
     if (activeObj) {
       // 如果是文字
@@ -378,9 +396,18 @@ const Index = () => {
     });
   };
   const renderTemplateByTemplateKey = (templateKey: string) => {
+<<<<<<< HEAD
     debugger
     console.log(templates)
     if (templateKey) {
+=======
+    console.log({
+      templateKey,
+      templates,
+    });
+
+    if (templateKey !== undefined && templateKey in templates) {
+>>>>>>> bcdb090f269e7faf8d7c056d877daa1bedeb5f32
       canvasRef.current.loadFromJSON(templates[templateKey].json, () => {
         console.log("init canvas ===>", { canvasRef });
       });
@@ -524,8 +551,6 @@ const Index = () => {
               // 获取图片宽高
               src: res.tempFilePaths[0],
               success: function (resp) {
-
-
                 const tempFiles = res.tempFiles;
                 // onAddChildrenTap({
                 //   index: 1,
@@ -538,7 +563,7 @@ const Index = () => {
                   reader.readAsDataURL(tempFiles[0].originalFileObj);
                   // 图片文件完全拿到后执行
                   reader.onload = () => {
-                    debugger;
+                    // debugger;
                     console.log(canvasRef.current.getWidth());
                     console.log(canvasRef.current.getHeight());
 
@@ -546,7 +571,6 @@ const Index = () => {
                     const h = canvasRef.current.getHeight();
                     // 转换成base64格式
                     const base64Img = reader.result;
-
 
                     // canvasRef.current.setBackgroundImage(
                     //   base64Img,
@@ -559,14 +583,21 @@ const Index = () => {
                     //     left: size[0] / 2,
                     //   }
                     // );
-                    const rate = Math.max(canvasRef.current.getElement().offsetWidth / resp.width*100) / 100
+                    const rate =
+                      Math.max(
+                        (canvasRef.current.getElement().offsetWidth /
+                          resp.width) *
+                          100
+                      ) / 100;
                     const [originX, originY] = [
-                      size[0] / 2 - canvasRef.current.getElement().offsetWidth / 2,
-                      size[1] / 2 - canvasRef.current.getElement().offsetHeight / 2
-                                                ]
+                      size[0] / 2 -
+                        canvasRef.current.getElement().offsetWidth / 2,
+                      size[1] / 2 -
+                        canvasRef.current.getElement().offsetHeight / 2,
+                    ];
                     if (resp.width > w) {
                       // 将文本对象添加到canvas上
-                        canvasRef.current.setBackgroundImage(
+                      canvasRef.current.setBackgroundImage(
                         base64Img,
                         canvasRef.current.renderAll.bind(canvasRef.current),
                         {

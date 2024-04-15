@@ -26,7 +26,7 @@ import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
 import { download } from "../../widget/download";
 import { useStore } from "../../widget/store";
-import { templates } from "./templates";
+import { templates } from "../templates/data";
 import ColorComponent from "./twoItem/color";
 
 type ElementType = "IText" | "Image" | "Textbox";
@@ -115,8 +115,6 @@ const Index = () => {
         console.log("Text changed:", shape.text);
       });
     } else if (type === "Image") {
-
-
       // fabric.Image.fromURL(url, function (oImg: any) {
       //   oImg.scale(1).set({
       //     ...baseShapeConfig[type],
@@ -267,7 +265,7 @@ const Index = () => {
   };
 
   const mouseDown = (opt: any) => {
-    debugger
+    // debugger
     const activeObj = canvasRef.current.getActiveObject();
     if (activeObj) {
       // 如果是文字
@@ -358,7 +356,12 @@ const Index = () => {
     });
   };
   const renderTemplateByTemplateKey = (templateKey: string) => {
-    if (templateKey) {
+    console.log({
+      templateKey,
+      templates,
+    });
+
+    if (templateKey !== undefined && templateKey in templates) {
       canvasRef.current.loadFromJSON(templates[templateKey].json, () => {
         console.log("init canvas ===>", { canvasRef });
       });
@@ -500,8 +503,6 @@ const Index = () => {
               // 获取图片宽高
               src: res.tempFilePaths[0],
               success: function (resp) {
-
-
                 const tempFiles = res.tempFiles;
                 // onAddChildrenTap({
                 //   index: 1,
@@ -514,7 +515,7 @@ const Index = () => {
                   reader.readAsDataURL(tempFiles[0].originalFileObj);
                   // 图片文件完全拿到后执行
                   reader.onload = () => {
-                    debugger;
+                    // debugger;
                     console.log(canvasRef.current.getWidth());
                     console.log(canvasRef.current.getHeight());
 
@@ -522,7 +523,6 @@ const Index = () => {
                     const h = canvasRef.current.getHeight();
                     // 转换成base64格式
                     const base64Img = reader.result;
-
 
                     // canvasRef.current.setBackgroundImage(
                     //   base64Img,
@@ -535,14 +535,21 @@ const Index = () => {
                     //     left: 0,
                     //   }
                     // );
-                    const rate = Math.max(canvasRef.current.getElement().offsetWidth / resp.width*100) / 100
+                    const rate =
+                      Math.max(
+                        (canvasRef.current.getElement().offsetWidth /
+                          resp.width) *
+                          100
+                      ) / 100;
                     const [originX, originY] = [
-                      size[0] / 2 - canvasRef.current.getElement().offsetWidth / 2,
-                      size[1] / 2 - canvasRef.current.getElement().offsetHeight / 2
-                                                ]
+                      size[0] / 2 -
+                        canvasRef.current.getElement().offsetWidth / 2,
+                      size[1] / 2 -
+                        canvasRef.current.getElement().offsetHeight / 2,
+                    ];
                     if (resp.width > w) {
                       // 将文本对象添加到canvas上
-                        canvasRef.current.setBackgroundImage(
+                      canvasRef.current.setBackgroundImage(
                         base64Img,
                         canvasRef.current.renderAll.bind(canvasRef.current),
                         {
@@ -563,17 +570,13 @@ const Index = () => {
                         canvasRef.current.renderAll.bind(canvasRef.current),
                         {
                           // 保证背景图1:1铺满容器
-                          scaleX: 1,//计算出图片要拉伸的宽度
+                          scaleX: 1, //计算出图片要拉伸的宽度
                           scaleY: 1, //计算出图片要拉伸的高度
                           top: 0,
                           left: 0,
                         }
                       );
                     }
-
-
-
-
                   };
                 }
               },

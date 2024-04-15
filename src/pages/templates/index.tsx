@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Taro from "@tarojs/taro";
-import { View, Text, Image, Input,Button } from "@tarojs/components";
-import { AtButton, AtCurtain } from "taro-ui";
+import { View, Text, Image, Input, Button } from "@tarojs/components";
 import { templateCate, templates } from "./data"; //templateImages,
 import "./index.scss";
 
@@ -12,8 +11,8 @@ const Templates = () => {
 
   const scrollTemplates = () => {
     //@ts-ignore
-    templatesRef.current?.scrollTo(0)
-  }
+    templatesRef.current?.scrollTo(0);
+  };
   const cateList = useMemo(
     () =>
       templateCate
@@ -52,11 +51,11 @@ const Templates = () => {
   );
   const templatesList = useMemo(() => {
     const filterTemplate = templates.filter((item) => {
-        const currentCate = templateCate[cateSelected];
-        const currentStyle =
-          !item.style || currentCate.styles[styleSelected] === item.style;
-        return item.cate === cateSelected && currentStyle;
-      });
+      const currentCate = templateCate[cateSelected];
+      const currentStyle =
+        !item.style || currentCate.styles[styleSelected] === item.style;
+      return item.cate === cateSelected && currentStyle;
+    });
     return filterTemplate.map((item, idx) => {
       // const currentTemplate = templates[key]
       return (
@@ -92,9 +91,7 @@ const Templates = () => {
           placeholder="请输入模板名称"
           focus
         />
-        <Button
-        className="search-button"
-        >搜索</Button>
+        <Button className="search-button">搜索</Button>
       </View>
       <View className="templates-contents">
         <View className="templates-contents-left">{cateList}</View>
@@ -102,7 +99,10 @@ const Templates = () => {
           {styleList.length > 0 && (
             <View className="templates-contents-right-nav">{styleList}</View>
           )}
-          <View className="templates-contents-right-templates" ref={templatesRef}>
+          <View
+            className="templates-contents-right-templates"
+            ref={templatesRef}
+          >
             {templatesList}
           </View>
         </View>

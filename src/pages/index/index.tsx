@@ -25,9 +25,10 @@ import TwoItemComponent from "./twoItem/index";
 import ThreeItemComponent from "./threeItem/index";
 import FourItemComponent from "./fourItem/index";
 import { fitterList, bottomList } from "./twoItem/typeList";
-import { download } from "../../widget/download";
+import { download, downloadBlob } from "../../widget/download";
 import { useStore } from "../../widget/store";
-import { templates, templateCate } from "../templates/data";
+
+import { templates } from "../templates/data";
 import ColorComponent from "./twoItem/color";
 
 type ElementType = "IText" | "Image" | "Textbox";
@@ -41,6 +42,7 @@ const baseShapeConfig = {
     width: 150,
     fontSize: 20,
     fontFamily: "华康金刚黑",
+    lineHeight: 2,
   },
   Image: {},
 };
@@ -141,6 +143,37 @@ const Index = () => {
         });
         canvasRef.current.add(oImg).setActiveObject(oImg);
       });
+
+      // fabric.Image.fromURL(url, function (oImg: any) {
+      //   const rate = Math.max(canvasRef.current.getElement().offsetWidth / oImg.width*100) / 100
+      //   const [originX, originY] = [
+      //     size[0] / 2 - canvasRef.current.getElement().offsetWidth / 2,
+      //     size[1] / 2 - canvasRef.current.getElement().offsetHeight / 2
+      //   ]
+      //   const w = canvasRef.current.getWidth();
+      //   const h = canvasRef.current.getHeight();
+      //   if (oImg.width > w) {
+      //     oImg.scale(1).set({
+      //       ...baseShapeConfig[type],
+      //       angle: 0,
+      //       scaleX: rate, //计算出图片要拉伸的宽度
+      //       scaleY: rate, //计算出图片要拉伸的高度
+      //       left: originX,
+      //       top: originY,
+      //     });
+      //   } else {
+      //     oImg.scale(1).set({
+      //       ...baseShapeConfig[type],
+      //       angle: 0,
+      //       scaleX: 1, //计算出图片要拉伸的宽度
+      //       scaleY: 1, //计算出图片要拉伸的高度
+      //       left: originX-oImg.width/2,
+      //       top: originY-oImg.height/2,
+      //     });
+      //   }
+
+      //   canvasRef.current.add(oImg).setActiveObject(oImg);
+      // });
 
       setFirstBtns({ showPop: true, firstIndex: 2 });
       return;
@@ -359,11 +392,6 @@ const Index = () => {
     });
   };
   const renderTemplateByTemplateKey = (templateKey: string) => {
-    console.log({
-      templateKey,
-      templates,
-    });
-
     if (templateKey !== undefined && templateKey in templates) {
       canvasRef.current.loadFromJSON(templates[templateKey].json, () => {
         console.log("init canvas ===>", { canvasRef });
@@ -430,6 +458,11 @@ const Index = () => {
     localStorage.setItem("tplImgs", JSON.stringify(tplImgs));
     setTpls((prev: any) => [...prev, { id, t: val }]);
     Taro.showToast({ title: "模板保存成功！", icon: "success" });
+    const str = JSON.stringify({
+      tplImgs: JSON.stringify(tplImgs),
+      tpls: JSON.stringify(tplsV),
+    });
+    downloadBlob(new Blob([str]), `${id}.json`);
 
     const zCanvas = document.createElement("canvas");
     zCanvas.width = 1080;
@@ -550,10 +583,10 @@ const Index = () => {
                     //   canvasRef.current.renderAll.bind(canvasRef.current),
                     //   {
                     //     // 保证背景图1:1铺满容器
-                    //     scaleX: 1 - canvasRef.current.getWidth() / resp.width, //计算出图片要拉伸的宽度
-                    //     scaleY: 1 - canvasRef.current.getHeight() / resp.height, //计算出图片要拉伸的高度
-                    //     top: 0,
-                    //     left: 0,
+                    //     scaleX: 1, //计算出图片要拉伸的宽度
+                    //     scaleY: 1, //计算出图片要拉伸的高度
+                    //     top: size[1] / 2,
+                    //     left: size[0] / 2,
                     //   }
                     // );
                     const rate =
@@ -593,8 +626,8 @@ const Index = () => {
                           // 保证背景图1:1铺满容器
                           scaleX: 1, //计算出图片要拉伸的宽度
                           scaleY: 1, //计算出图片要拉伸的高度
-                          top: 0,
-                          left: 0,
+                          top: size[1] / 2 - resp.height / 2,
+                          left: size[0] / 2 - resp.width / 2,
                         }
                       );
                     }

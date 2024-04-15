@@ -51,6 +51,7 @@ const Templates = () => {
     [cateSelected, styleSelected]
   );
   const templatesList = useMemo(() => {
+    debugger
     const filterTemplate = Object.keys(templates)
       .map((key) => ({
         ...templates[key],
@@ -62,8 +63,10 @@ const Templates = () => {
           !item.style || currentCate.styles[styleSelected] === item.style;
         return item.cate === cateSelected && currentStyle;
       });
+    debugger
     return filterTemplate.map((item, idx) => {
       // const currentTemplate = templates[key]
+      debugger
       return (
         <View
           className="template-item"
